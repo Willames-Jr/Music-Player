@@ -1,3 +1,4 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -71,6 +72,18 @@ class _AllMusicsState extends State<AllMusics> {
         onSelected: (value) {
           if (value == "create") {
             ShowDialogs().showAddOnPlaylistDialog(context, index);
+          } else if (value == "add") {
+            if (controller.assetsAudioPlayer.playlist != null) {
+              controller.assetsAudioPlayer.playlist.add(
+                Audio.file(
+                  list[index].path,
+                  metas: Metas(
+                      album: list[index].album,
+                      artist: list[index].artist,
+                      title: list[index].displayName),
+                ),
+              );
+            }
           }
         },
         itemBuilder: (_) {
@@ -78,6 +91,10 @@ class _AllMusicsState extends State<AllMusics> {
             PopupMenuItem(
               child: Text("Adicionar á Playlist"),
               value: "create",
+            ),
+            PopupMenuItem(
+              child: Text("Adicionar ao final da fila"),
+              value: "add",
             ),
           ];
         },

@@ -223,7 +223,6 @@ abstract class _AppBase with Store {
     );
   }
 
-
   @action
   nextMusic(AssetsAudioPlayer player) async {
     await player.next();
