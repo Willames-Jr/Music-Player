@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -8,6 +9,14 @@ import 'package:music_player/app/entitys/playlist_entity.dart';
 
 class ShowDialogs {
   final controller = Modular.get<AppController>();
+  final _listOfImages = [
+    AppConsts.electicGuitar,
+    AppConsts.guitar,
+    AppConsts.headphone,
+    AppConsts.piano,
+    AppConsts.people
+  ];
+  var _actualImage = 0;
 
   deleteMusicFromPlaylistDialog(
       BuildContext context, int indexOfPlaylist, String path) {
@@ -63,7 +72,8 @@ class ShowDialogs {
             if (textController.text.isNotEmpty) {
               await controller.createNewPlaylist(
                 playlist: PlaylistEntity(
-                    image: AppConsts.casseteImage, name: textController.text),
+                    image: _listOfImages[_actualImage],
+                    name: textController.text),
                 music: MusicEntity(
                   path: controller.musicList.value[indexOfMusic].path,
                 ),
@@ -82,16 +92,53 @@ class ShowDialogs {
           },
         );
 
-        return AlertDialog(
-          title: Text("Nova Playlist"),
-          content: TextField(
-            controller: textController,
-            decoration: InputDecoration(
-              border: OutlineInputBorder(),
-              hintText: "Nome",
+        return SingleChildScrollView(
+          child: AlertDialog(
+            title: Text("Nova Playlist"),
+            content: Column(
+              children: <Widget>[
+                Text(
+                  "Selecione a imagem: ",
+                  style: TextStyle(fontSize: 18),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                CarouselSlider.builder(
+                  itemBuilder: (BuildContext context, int index) {
+                    return Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Image.asset(
+                          _listOfImages[index],
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                    );
+                  },
+                  itemCount: 5,
+                  options: CarouselOptions(
+                    height: 150.0,
+                    onPageChanged: (index, reason) {
+                      _actualImage = index;
+                    },
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextField(
+                  controller: textController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: "Nome",
+                  ),
+                ),
+              ],
             ),
+            actions: <Widget>[cancelButton, createPlaylistButton],
           ),
-          actions: <Widget>[cancelButton, createPlaylistButton],
         );
       },
     );
