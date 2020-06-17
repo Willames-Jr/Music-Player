@@ -48,7 +48,8 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
                         name: controller.playlists[widget.index].name),
                   );
                 } else if (value == "shuffle") {
-                  controller.playPlaylist(widget.index, shuffle: true);
+                  controller.playPlaylist(widget.index,
+                      shuffle: true, startIndex: 0);
                 }
               },
               itemBuilder: (_) {

@@ -99,8 +99,8 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               IconButton(
                 icon: Icon(Icons.play_arrow),
                 iconSize: 40,
-                onPressed: () =>
-                    controller.playPlaylist(widget.index, shuffle: false),
+                onPressed: () => controller.playPlaylist(widget.index,
+                    shuffle: false, startIndex: 0),
               ),
               SizedBox(
                 width: 20,
