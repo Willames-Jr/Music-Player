@@ -224,6 +224,18 @@ abstract class _AppBase with Store {
   }
 
   @action
+  addAsNextMusic(Audio audio) {
+    int indexOfAtualMusic =
+        assetsAudioPlayer.current.value.playlist.currentIndex;
+    assetsAudioPlayer.playlist.insert(indexOfAtualMusic + 1, audio);
+  }
+
+  @action
+  addAtTheEndOfQueue(Audio audio) {
+    assetsAudioPlayer.playlist.add(audio);
+  }
+
+  @action
   nextMusic(AssetsAudioPlayer player) async {
     await player.next();
     atualMusic = assetsAudioPlayer.current.value.audio;
