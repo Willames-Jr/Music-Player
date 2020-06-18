@@ -72,9 +72,9 @@ class _AllMusicsState extends State<AllMusics> {
         onSelected: (value) {
           if (value == "create") {
             ShowDialogs().showAddOnPlaylistDialog(context, index);
-          } else if (value == "add") {
+          } else if (value == "addAtTheEnd") {
             if (controller.assetsAudioPlayer.playlist != null) {
-              controller.assetsAudioPlayer.playlist.add(
+              controller.addAtTheEndOfQueue(
                 Audio.file(
                   list[index].path,
                   metas: Metas(
@@ -84,17 +84,31 @@ class _AllMusicsState extends State<AllMusics> {
                 ),
               );
             }
+          } else if (value == "addAsNext") {
+            controller.addAsNextMusic(
+              Audio.file(
+                list[index].path,
+                metas: Metas(
+                    album: list[index].album,
+                    artist: list[index].artist,
+                    title: list[index].displayName),
+              ),
+            );
           }
         },
         itemBuilder: (_) {
           return <PopupMenuEntry>[
             PopupMenuItem(
-              child: Text("Adicionar á Playlist"),
+              child: Text("Adicionar à Playlist"),
               value: "create",
             ),
             PopupMenuItem(
-              child: Text("Adicionar ao final da fila"),
-              value: "add",
+              child: Text("Adicionar à fila"),
+              value: "addAtTheEnd",
+            ),
+            PopupMenuItem(
+              child: Text("Reproduzir a seguir"),
+              value: "addAsNext",
             ),
           ];
         },
