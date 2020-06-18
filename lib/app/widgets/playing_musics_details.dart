@@ -1,5 +1,7 @@
+import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:music_player/app/app_controller.dart';
 
@@ -20,9 +22,48 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: DraggableScrollbar.rrect(
-        controller: myScrollController,
-        child: ListView.builder(
+      child: Observer(
+        builder: (_) {
+          final list = controller.assetsAudioPlayer.playlist.audios;
+          List<Widget> widgets = [];
+          for (final item in list) {
+            widgets.add(
+              ListTile(
+                key: ValueKey(item),
+                title: RichText(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  strutStyle: StrutStyle(fontSize: 17.0),
+                  text: TextSpan(
+                      style: TextStyle(color: Colors.black, fontSize: 17),
+                      text: item.metas.title),
+                ),
+                subtitle: RichText(
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  strutStyle: StrutStyle(fontSize: 12.0),
+                  text: TextSpan(
+                    style: TextStyle(color: Colors.grey),
+                    text: item.metas.artist == "<unknown>"
+                        ? "Artista Desconhecido"
+                        : item.metas.artist,
+                  ),
+                ),
+                onTap: () {
+                  int index = list.indexOf(item);
+                  controller.playMusicOnPlaylist(index);
+                },
+              ),
+            );
+          }
+          return ReorderableListView(
+            scrollController: myScrollController,
+            children: widgets,
+            onReorder: (oldIndex, newIndex) {},
+          );
+        },
+      ),
+      /*ListView.builder(
           controller: myScrollController,
           itemCount: controller.assetsAudioPlayer.playlist.audios.length,
           itemBuilder: (context, index) {
@@ -53,8 +94,7 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
               onTap: () => controller.playMusicOnPlaylist(index),
             );
           },
-        ),
-      ),
+        ),*/
     );
   }
 }
