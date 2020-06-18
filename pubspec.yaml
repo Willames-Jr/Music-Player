@@ -21,7 +21,7 @@ dependencies:
   flutter_splash: ^1.0.0
   flutter_launcher_icons: ^0.7.5
   flutter_staggered_animations: ^0.1.2
-  assets_audio_player: ^1.6.3
+  assets_audio_player: ^2.0.4+2
   draggable_scrollbar: ^0.0.4
   floor: ^0.13.0
   carousel_slider: ^2.1.0
