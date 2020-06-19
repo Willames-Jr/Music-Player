@@ -1,8 +1,12 @@
+import 'dart:ui';
+
 import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorderable_list.dart';
+import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:music_player/app/app_controller.dart';
 
 class PlayingMusicsDetails extends StatefulWidget {
@@ -24,42 +28,41 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
     return Container(
       child: Observer(
         builder: (_) {
-          final list = controller.assetsAudioPlayer.playlist.audios;
-          List<Widget> widgets = [];
-          for (final item in list) {
-            widgets.add(
-              ListTile(
+          return ImplicitlyAnimatedReorderableList<Audio>(
+            items: controller.assetsAudioPlayer.playlist.audios,
+            areItemsTheSame: (oldItem, newItem) => oldItem.path == newItem.path,
+            onReorderFinished: (item, from, to, newItems) {
+              controller.modifyPosition(to, from);
+            },
+            itemBuilder: (context, itemAnimation, item, index) {
+              return Reorderable(
                 key: ValueKey(item),
-                title: RichText(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  strutStyle: StrutStyle(fontSize: 17.0),
-                  text: TextSpan(
-                      style: TextStyle(color: Colors.black, fontSize: 17),
-                      text: item.metas.title),
-                ),
-                subtitle: RichText(
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  strutStyle: StrutStyle(fontSize: 12.0),
-                  text: TextSpan(
-                    style: TextStyle(color: Colors.grey),
-                    text: item.metas.artist == "<unknown>"
-                        ? "Artista Desconhecido"
-                        : item.metas.artist,
-                  ),
-                ),
-                onTap: () {
-                  int index = list.indexOf(item);
-                  controller.playMusicOnPlaylist(index);
+                builder: (context, dragAnimation, inDrag) {
+                  final t = dragAnimation.value;
+                  final elevation = lerpDouble(0, 8, t);
+                  final color = Color.lerp(Colors.white, Colors.white, t);
+                  return SizeFadeTransition(
+                    sizeFraction: 0.7,
+                    curve: Curves.easeInOut,
+                    animation: itemAnimation,
+                    child: Material(
+                      color: color,
+                      elevation: elevation,
+                      child: ListTile(
+                        title: Text(item.metas.title),
+                        trailing: Handle(
+                          delay: const Duration(milliseconds: 100),
+                          child: Icon(
+                            Icons.list,
+                            color: Colors.grey,
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
                 },
-              ),
-            );
-          }
-          return ReorderableListView(
-            scrollController: myScrollController,
-            children: widgets,
-            onReorder: (oldIndex, newIndex) {},
+              );
+            },
           );
         },
       ),
