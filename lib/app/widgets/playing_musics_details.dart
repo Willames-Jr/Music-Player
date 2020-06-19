@@ -16,7 +16,6 @@ class PlayingMusicsDetails extends StatefulWidget {
 
 class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
   final controller = Modular.get<AppController>();
-  final ScrollController myScrollController = ScrollController();
 
   @override
   void initState() {
@@ -48,13 +47,36 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
                     child: Material(
                       color: color,
                       elevation: elevation,
-                      child: ListTile(
-                        title: Text(item.metas.title),
-                        trailing: Handle(
-                          delay: const Duration(milliseconds: 100),
-                          child: Icon(
-                            Icons.list,
-                            color: Colors.grey,
+                      child: Card(
+                        child: ListTile(
+                          title: Text(
+                            item.metas.title,
+                            maxLines: 1,
+                          ),
+                          subtitle: Text(
+                            item.metas.artist,
+                            maxLines: 1,
+                          ),
+                          leading: Handle(
+                            delay: const Duration(milliseconds: 1),
+                            child: Icon(
+                              Icons.list,
+                              size: 30,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          trailing: Observer(
+                            builder: (_) {
+                              return Icon(
+                                Icons.play_circle_filled,
+                                color: controller.atualMusic.audio == item
+                                    ? Colors.green
+                                    : Colors.grey,
+                                size: controller.atualMusic.audio == item
+                                    ? 35
+                                    : 0,
+                              );
+                            },
                           ),
                         ),
                       ),

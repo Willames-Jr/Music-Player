@@ -158,6 +158,41 @@ mixin _$AppController on _AppBase, Store {
     return _$playOrPauseMusicAsyncAction.run(() => super.playOrPauseMusic());
   }
 
+  final _$_AppBaseActionController = ActionController(name: '_AppBase');
+
+  @override
+  dynamic addAsNextMusic(Audio audio) {
+    final _$actionInfo =
+        _$_AppBaseActionController.startAction(name: '_AppBase.addAsNextMusic');
+    try {
+      return super.addAsNextMusic(audio);
+    } finally {
+      _$_AppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic addAtTheEndOfQueue(Audio audio) {
+    final _$actionInfo = _$_AppBaseActionController.startAction(
+        name: '_AppBase.addAtTheEndOfQueue');
+    try {
+      return super.addAtTheEndOfQueue(audio);
+    } finally {
+      _$_AppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  dynamic modifyPosition(int newIndex, int oldIndex) {
+    final _$actionInfo =
+        _$_AppBaseActionController.startAction(name: '_AppBase.modifyPosition');
+    try {
+      return super.modifyPosition(newIndex, oldIndex);
+    } finally {
+      _$_AppBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

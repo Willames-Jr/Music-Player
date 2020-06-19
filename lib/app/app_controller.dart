@@ -239,6 +239,7 @@ abstract class _AppBase with Store {
   modifyPosition(int newIndex, int oldIndex) {
     final music = assetsAudioPlayer.playlist.removeAtIndex(oldIndex);
     assetsAudioPlayer.playlist.insert(newIndex, music);
+    atualMusic = assetsAudioPlayer.current.value.audio;
   }
 
   @action
