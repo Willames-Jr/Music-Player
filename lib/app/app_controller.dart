@@ -221,6 +221,8 @@ abstract class _AppBase with Store {
         },
       ),
     );
+
+    atualMusic = assetsAudioPlayer.current.value.audio;
   }
 
   @action
