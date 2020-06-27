@@ -65,6 +65,7 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
                               color: Colors.grey,
                             ),
                           ),
+                          onTap: () => controller.playMusicOnPlaylist(index),
                           trailing: Observer(
                             builder: (_) {
                               return Icon(
