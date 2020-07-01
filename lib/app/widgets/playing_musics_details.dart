@@ -28,10 +28,10 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
       child: Observer(
         builder: (_) {
           return ImplicitlyAnimatedReorderableList<Audio>(
-            items: controller.assetsAudioPlayer.playlist.audios,
+            items: controller.audioManager.assetsAudioPlayer.playlist.audios,
             areItemsTheSame: (oldItem, newItem) => oldItem.path == newItem.path,
             onReorderFinished: (item, from, to, newItems) {
-              controller.modifyPosition(to, from);
+              controller.audioManager.modifyPosition(to, from);
             },
             itemBuilder: (context, itemAnimation, item, index) {
               return Reorderable(
@@ -65,17 +65,22 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
                               color: Colors.grey,
                             ),
                           ),
-                          onTap: () => controller.playMusicOnPlaylist(index),
+                          onTap: () => controller.audioManager
+                              .playMusicOnPlaylist(index),
                           trailing: Observer(
                             builder: (_) {
                               return Icon(
                                 Icons.play_circle_filled,
-                                color: controller.atualMusic.audio == item
-                                    ? Colors.green
-                                    : Colors.grey,
-                                size: controller.atualMusic.audio == item
-                                    ? 35
-                                    : 0,
+                                color:
+                                    controller.audioManager.atualMusic.audio ==
+                                            item
+                                        ? Colors.green
+                                        : Colors.grey,
+                                size:
+                                    controller.audioManager.atualMusic.audio ==
+                                            item
+                                        ? 35
+                                        : 0,
                               );
                             },
                           ),
@@ -89,38 +94,6 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
           );
         },
       ),
-      /*ListView.builder(
-          controller: myScrollController,
-          itemCount: controller.assetsAudioPlayer.playlist.audios.length,
-          itemBuilder: (context, index) {
-            return ListTile(
-              title: RichText(
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                strutStyle: StrutStyle(fontSize: 17.0),
-                text: TextSpan(
-                    style: TextStyle(color: Colors.black, fontSize: 17),
-                    text: controller
-                        .assetsAudioPlayer.playlist.audios[index].metas.title),
-              ),
-              subtitle: RichText(
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                strutStyle: StrutStyle(fontSize: 12.0),
-                text: TextSpan(
-                  style: TextStyle(color: Colors.grey),
-                  text: controller.assetsAudioPlayer.playlist.audios[index]
-                              .metas.artist ==
-                          "<unknown>"
-                      ? "Artista Desconhecido"
-                      : controller.assetsAudioPlayer.playlist.audios[index]
-                          .metas.artist,
-                ),
-              ),
-              onTap: () => controller.playMusicOnPlaylist(index),
-            );
-          },
-        ),*/
     );
   }
 }

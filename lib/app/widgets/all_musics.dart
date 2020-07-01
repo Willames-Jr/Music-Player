@@ -25,7 +25,7 @@ class _AllMusicsState extends State<AllMusics> {
           child: FlatButton(
             padding: EdgeInsets.all(0),
             onPressed: () {
-              controller.playMusic(list[index], shuffle: true);
+              controller.audioManager.playMusic(list[index], shuffle: true);
             },
             child: const ListTile(
               title: Text(
@@ -73,8 +73,8 @@ class _AllMusicsState extends State<AllMusics> {
           if (value == "create") {
             ShowDialogs().showAddOnPlaylistDialog(context, index);
           } else if (value == "addAtTheEnd") {
-            if (controller.assetsAudioPlayer.playlist != null) {
-              controller.addAtTheEndOfQueue(
+            if (controller.audioManager.assetsAudioPlayer.playlist != null) {
+              controller.audioManager.addAtTheEndOfQueue(
                 Audio.file(
                   list[index].path,
                   metas: Metas(
@@ -85,7 +85,7 @@ class _AllMusicsState extends State<AllMusics> {
               );
             }
           } else if (value == "addAsNext") {
-            controller.addAsNextMusic(
+            controller.audioManager.addAsNextMusic(
               Audio.file(
                 list[index].path,
                 metas: Metas(
@@ -113,11 +113,12 @@ class _AllMusicsState extends State<AllMusics> {
           ];
         },
       ),
-      subtitle: Text(controller.musicList.value[index].artist == "<unknown>"
-          ? "Artista desconhecido"
-          : controller.musicList.value[index].artist),
+      subtitle: Text(
+          controller.audioManager.musicList.value[index].artist == "<unknown>"
+              ? "Artista desconhecido"
+              : controller.audioManager.musicList.value[index].artist),
       onTap: () {
-        controller.playMusic(list[index], shuffle: false);
+        controller.audioManager.playMusic(list[index], shuffle: false);
       },
     );
   }
@@ -135,10 +136,10 @@ class _AllMusicsState extends State<AllMusics> {
         child: DraggableScrollbar.rrect(
           controller: myScrollController,
           child: ListView.builder(
-            itemCount: controller.musicList.value.length,
+            itemCount: controller.audioManager.musicList.value.length,
             controller: myScrollController,
             itemBuilder: (_, index) {
-              var list = controller.musicList.value;
+              var list = controller.audioManager.musicList.value;
               return index == 0
                   ? getShuffleButton(list, index)
                   : getListTile(list, index);

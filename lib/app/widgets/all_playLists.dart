@@ -27,7 +27,7 @@ class _AllPlaylistsState extends State<AllPlaylists> {
           addAutomaticKeepAlives: false,
           gridDelegate:
               SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-          itemCount: controller.playlists.length,
+          itemCount: controller.audioManager.playlists.length,
           itemBuilder: (BuildContext context, int index) {
             return AnimationConfiguration.staggeredGrid(
               columnCount: 2,

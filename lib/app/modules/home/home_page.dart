@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage>
       backgroundColor: Color(0xffD7DBDD),
       body: Observer(
         builder: (_) {
-          if (controller.musicList.value == null) {
+          if (controller.audioManager.musicList.value == null) {
             return Center(child: CircularProgressIndicator());
           }
           if (_currentIndex == 0) {

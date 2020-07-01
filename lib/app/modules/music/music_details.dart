@@ -82,7 +82,8 @@ class _MusicDetailsState extends State<MusicDetails> {
                             text: TextSpan(
                               style:
                                   TextStyle(color: Colors.black, fontSize: 20),
-                              text: controller.atualMusic.audio.metas.title,
+                              text: controller
+                                  .audioManager.atualMusic.audio.metas.title,
                             ),
                           ),
                         );
@@ -96,31 +97,40 @@ class _MusicDetailsState extends State<MusicDetails> {
                           strutStyle: StrutStyle(fontSize: 12.0),
                           text: TextSpan(
                             style: TextStyle(color: Colors.grey),
-                            text: controller.atualMusic.audio.metas.artist ==
+                            text: controller.audioManager.atualMusic.audio.metas
+                                        .artist ==
                                     "<unknown>"
                                 ? "Artista Desconhecido"
-                                : controller.atualMusic.audio.metas.artist,
+                                : controller
+                                    .audioManager.atualMusic.audio.metas.artist,
                           ),
                         );
                       },
                     ),
                     Observer(
                       builder: (_) {
-                        return controller
-                                    .assetsAudioPlayer.current.value.audio ==
+                        return controller.audioManager.assetsAudioPlayer.current
+                                    .value.audio ==
                                 null
                             ? Text("r")
                             : PlayerBuilder.currentPosition(
-                                player: controller.assetsAudioPlayer,
+                                player:
+                                    controller.audioManager.assetsAudioPlayer,
                                 builder: (context, duration) {
                                   return Slider(
                                     onChanged: (v) {
-                                      controller.assetsAudioPlayer
+                                      controller.audioManager.assetsAudioPlayer
                                           .seek(Duration(seconds: v.toInt()));
                                     },
                                     value: duration.inSeconds.toDouble(),
-                                    max: controller.assetsAudioPlayer.current
-                                        .value.audio.duration.inSeconds
+                                    max: controller
+                                        .audioManager
+                                        .assetsAudioPlayer
+                                        .current
+                                        .value
+                                        .audio
+                                        .duration
+                                        .inSeconds
                                         .toDouble(),
                                     min: 0,
                                     activeColor: Color(0XFF5E35B1),
@@ -140,11 +150,11 @@ class _MusicDetailsState extends State<MusicDetails> {
                             Observer(
                               builder: (_) {
                                 return PlayerBuilder.currentPosition(
-                                  player: controller.assetsAudioPlayer,
+                                  player:
+                                      controller.audioManager.assetsAudioPlayer,
                                   builder: (context, duration) {
-                                    var atualDuration =
-                                        controller.getAtualDuration(
-                                            duration.inSeconds,
+                                    var atualDuration = controller.audioManager
+                                        .getAtualDuration(duration.inSeconds,
                                             duration.inMinutes);
                                     return Text(atualDuration);
                                   },
@@ -156,10 +166,12 @@ class _MusicDetailsState extends State<MusicDetails> {
                             ),
                             Observer(builder: (_) {
                               return PlayerBuilder.currentPosition(
-                                  player: controller.assetsAudioPlayer,
+                                  player:
+                                      controller.audioManager.assetsAudioPlayer,
                                   builder: (context, duration) {
-                                    return Text(controller.getTotalDuration(
-                                        controller.assetsAudioPlayer));
+                                    return Text(controller.audioManager
+                                        .getTotalDuration(controller
+                                            .audioManager.assetsAudioPlayer));
                                   });
                             }),
                           ],
@@ -171,12 +183,12 @@ class _MusicDetailsState extends State<MusicDetails> {
                               iconSize: 30,
                               icon: Icon(Icons.skip_previous),
                               onPressed: () {
-                                controller.previousMusic(
-                                    controller.assetsAudioPlayer);
+                                controller.audioManager.previousMusic(
+                                    controller.audioManager.assetsAudioPlayer);
                               },
                             ),
                             PlayerBuilder.isPlaying(
-                              player: controller.assetsAudioPlayer,
+                              player: controller.audioManager.assetsAudioPlayer,
                               builder: (context, isPlaying) {
                                 return IconButton(
                                   iconSize: 50,
@@ -184,7 +196,7 @@ class _MusicDetailsState extends State<MusicDetails> {
                                       ? Icons.play_arrow
                                       : Icons.pause),
                                   onPressed: () {
-                                    controller.playOrPauseMusic();
+                                    controller.audioManager.playOrPauseMusic();
                                   },
                                 );
                               },
@@ -193,8 +205,8 @@ class _MusicDetailsState extends State<MusicDetails> {
                               iconSize: 30,
                               icon: Icon(Icons.skip_next),
                               onPressed: () {
-                                controller
-                                    .nextMusic(controller.assetsAudioPlayer);
+                                controller.audioManager.nextMusic(
+                                    controller.audioManager.assetsAudioPlayer);
                               },
                             ),
                           ],

@@ -35,11 +35,12 @@ class _BottomDetailState extends State<BottomDetail> {
             Observer(
               builder: (_) {
                 return FlatButton(
-                  onPressed: controller.atualMusic.audio.path == null
-                      ? null
-                      : () {
-                          Navigator.pushNamed(context, "/musicDetails");
-                        },
+                  onPressed:
+                      controller.audioManager.atualMusic.audio.path == null
+                          ? null
+                          : () {
+                              Navigator.pushNamed(context, "/musicDetails");
+                            },
                   child: Stack(
                     children: <Widget>[
                       Positioned(
@@ -68,8 +69,8 @@ class _BottomDetailState extends State<BottomDetail> {
                                   strutStyle: StrutStyle(fontSize: 18.0),
                                   text: TextSpan(
                                     style: TextStyle(color: Colors.black),
-                                    text:
-                                        controller.atualMusic.audio.metas.title,
+                                    text: controller.audioManager.atualMusic
+                                        .audio.metas.title,
                                   ),
                                 ),
                               );
@@ -79,10 +80,12 @@ class _BottomDetailState extends State<BottomDetail> {
                             ),
                             Observer(builder: (_) {
                               return Text(
-                                controller.atualMusic.audio.metas.artist ==
+                                controller.audioManager.atualMusic.audio.metas
+                                            .artist ==
                                         "<unknown>"
                                     ? "Artista Desconhecido"
-                                    : controller.atualMusic.audio.metas.artist,
+                                    : controller.audioManager.atualMusic.audio
+                                        .metas.artist,
                                 style: TextStyle(fontSize: 14),
                                 textAlign: TextAlign.left,
                               );
@@ -100,12 +103,12 @@ class _BottomDetailState extends State<BottomDetail> {
               child: SizedBox(
                 height: 60,
                 child: PlayerBuilder.isPlaying(
-                  player: controller.assetsAudioPlayer,
+                  player: controller.audioManager.assetsAudioPlayer,
                   builder: (context, isPlaying) {
                     return FlatButton(
                       color: Colors.white,
                       onPressed: () {
-                        controller.playOrPauseMusic();
+                        controller.audioManager.playOrPauseMusic();
                       },
                       child: Icon(!isPlaying ? Icons.play_arrow : Icons.pause),
                     );

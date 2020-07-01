@@ -34,7 +34,7 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
                   strutStyle: StrutStyle(fontSize: 16.0),
                   text: TextSpan(
                     style: TextStyle(color: Colors.black),
-                    text: controller.playlists[widget.index].name,
+                    text: controller.audioManager.playlists[widget.index].name,
                   ),
                 );
               }),
@@ -43,13 +43,14 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
               icon: Icon(Icons.more_vert),
               onSelected: (value) {
                 if (value == "delete") {
-                  controller.deletePlaylist(
+                  controller.audioManager.deletePlaylist(
                     playlist: PlaylistEntity(
-                        name: controller.playlists[widget.index].name),
+                        name: controller
+                            .audioManager.playlists[widget.index].name),
                   );
                 } else if (value == "shuffle") {
-                  controller.playPlaylist(widget.index,
-                      shuffle: true, startIndex: 0);
+                  controller.audioManager
+                      .playPlaylist(widget.index, shuffle: true, startIndex: 0);
                 }
               },
               itemBuilder: (_) {
@@ -73,7 +74,7 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
           Opacity(
             opacity: 0.7,
             child: Image.asset(
-              controller.playlists[widget.index].image,
+              controller.audioManager.playlists[widget.index].image,
               fit: BoxFit.fill,
             ),
           ),
@@ -87,8 +88,8 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
               ),
               iconSize: 40,
               onPressed: () {
-                controller.playPlaylist(widget.index,
-                    shuffle: false, startIndex: 0);
+                controller.audioManager
+                    .playPlaylist(widget.index, shuffle: false, startIndex: 0);
               },
             ),
           ),

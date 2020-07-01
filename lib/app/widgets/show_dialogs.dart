@@ -30,7 +30,7 @@ class ShowDialogs {
           ),
           onPressed: () {
             Navigator.of(context).pop();
-            controller.deleteMusicFromPlaylist(
+            controller.audioManager.deleteMusicFromPlaylist(
                 indexOfPlaylist: indexOfPlaylist, path: path);
           },
         );
@@ -70,12 +70,13 @@ class ShowDialogs {
           ),
           onPressed: () async {
             if (textController.text.isNotEmpty) {
-              await controller.createNewPlaylist(
+              await controller.audioManager.createNewPlaylist(
                 playlist: PlaylistEntity(
                     image: _listOfImages[_actualImage],
                     name: textController.text),
                 music: MusicEntity(
-                  path: controller.musicList.value[indexOfMusic].path,
+                  path: controller
+                      .audioManager.musicList.value[indexOfMusic].path,
                 ),
               );
             }
@@ -171,16 +172,18 @@ class ShowDialogs {
           title: Text("Adicionar á playlist"),
           content: Container(
             child: ListView.builder(
-              itemCount: controller.playlists.length,
+              itemCount: controller.audioManager.playlists.length,
               itemBuilder: (context, index) {
                 return Card(
                   elevation: 5,
                   child: FlatButton(
                     onPressed: () async {
-                      await controller.addMusicOnPlaylist(
+                      await controller.audioManager.addMusicOnPlaylist(
                         music: MusicEntity(
-                          path: controller.musicList.value[indexOfMusic].path,
-                          indexOfPlaylist: controller.playlists[index].index,
+                          path: controller
+                              .audioManager.musicList.value[indexOfMusic].path,
+                          indexOfPlaylist:
+                              controller.audioManager.playlists[index].index,
                         ),
                         index: index,
                       );
@@ -191,7 +194,7 @@ class ShowDialogs {
                       strutStyle: StrutStyle(fontSize: 20.0),
                       text: TextSpan(
                         style: TextStyle(color: Colors.black, fontSize: 20),
-                        text: controller.playlists[index].name,
+                        text: controller.audioManager.playlists[index].name,
                       ),
                     ),
                   ),

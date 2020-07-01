@@ -21,77 +21,19 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
 
   @override
   Widget build(BuildContext context) {
-    musics = controller.playlists[widget.index].musics;
+    musics = controller.audioManager.playlists[widget.index].musics;
 
     return Scaffold(
       body: CustomScrollView(
-        /*body: Observer(
-          builder: (_) {
-            return DraggableScrollbar.rrect(
-              controller: myScrollController,
-              child: ListView.builder(
-                itemCount: controller.playlists[widget.index].musics.length,
-                controller: myScrollController,
-                itemBuilder: (_, index) {
-                  var list = controller.getMusicsOfPlaylist(widget.index);
-
-                  return ListTile(
-                    leading: ClipRRect(
-                      borderRadius: BorderRadius.circular(30.0),
-                      child: Image.asset(
-                        controller.playlists[widget.index].image,
-                        fit: BoxFit.cover,
-                        height: 50,
-                        width: 50,
-                      ),
-                    ),
-                    title: RichText(
-                      overflow: TextOverflow.ellipsis,
-                      strutStyle: StrutStyle(fontSize: 16.0),
-                      text: TextSpan(
-                        style: TextStyle(color: Colors.black),
-                        text: list[index].metas.title,
-                      ),
-                    ),
-                    trailing: PopupMenuButton(
-                      icon: Icon(Icons.more_vert),
-                      onSelected: (value) {
-                        if (value == "delete") {
-                          ShowDialogs().deleteMusicFromPlaylistDialog(
-                              context, widget.index, list[index].path);
-                        }
-                      },
-                      itemBuilder: (_) {
-                        return <PopupMenuEntry>[
-                          PopupMenuItem(
-                            child: Text("Remover da playlist"),
-                            value: "delete",
-                          ),
-                        ];
-                      },
-                    ),
-                    subtitle: Text(list[index].metas.artist == "<unknown>"
-                        ? "Artista desconhecido"
-                        : list[index].metas.artist),
-                    onTap: () {
-                      controller.playPlaylist(widget.index,
-                          shuffle: false, startIndex: index);
-                    },
-                  );
-                },
-              ),
-            );
-          },
-        ),*/
         slivers: <Widget>[
           SliverAppBar(
             expandedHeight: 200,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(controller.playlists[widget.index].name),
+              title: Text(controller.audioManager.playlists[widget.index].name),
               centerTitle: true,
               background: Image.asset(
-                controller.playlists[widget.index].image,
+                controller.audioManager.playlists[widget.index].image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -99,8 +41,8 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               IconButton(
                 icon: Icon(Icons.play_arrow),
                 iconSize: 40,
-                onPressed: () => controller.playPlaylist(widget.index,
-                    shuffle: false, startIndex: 0),
+                onPressed: () => controller.audioManager
+                    .playPlaylist(widget.index, shuffle: false, startIndex: 0),
               ),
               SizedBox(
                 width: 20,
@@ -112,13 +54,14 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    var list = controller.getMusicsOfPlaylist(widget.index);
+                    var list = controller.audioManager
+                        .getMusicsOfPlaylist(widget.index);
 
                     return ListTile(
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(30.0),
                         child: Image.asset(
-                          controller.playlists[widget.index].image,
+                          controller.audioManager.playlists[widget.index].image,
                           fit: BoxFit.cover,
                           height: 50,
                           width: 50,
@@ -153,12 +96,13 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                           ? "Artista desconhecido"
                           : list[index].metas.artist),
                       onTap: () {
-                        controller.playPlaylist(widget.index,
+                        controller.audioManager.playPlaylist(widget.index,
                             shuffle: false, startIndex: index);
                       },
                     );
                   },
-                  childCount: controller.playlists[widget.index].musics.length,
+                  childCount: controller
+                      .audioManager.playlists[widget.index].musics.length,
                 ),
               );
             },
