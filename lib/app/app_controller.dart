@@ -3,6 +3,7 @@ import 'package:mobx/mobx.dart';
 import 'package:music_player/app/db/app_database.dart';
 import 'package:music_player/app/entitys/music_entity.dart';
 import 'package:music_player/app/entitys/playlist_entity.dart';
+import 'package:music_player/app/shared/audio_manage/audio_manager.dart';
 import 'package:music_player/app/shared/models/audio_model.dart';
 import 'package:music_player/app/shared/models/playlist_model.dart';
 import 'package:music_player/app/shared/paths_manage/paths_manager.dart';
@@ -12,11 +13,13 @@ part 'app_controller.g.dart';
 class AppController = _AppBase with _$AppController;
 
 abstract class _AppBase with Store {
-  final PathsManager pathsManager;
+  //final PathsManager pathsManager;
 
-  final DataBase db;
+  //final DataBase db;
 
-  @observable
+  final AudioManager audioManager;
+
+  /*@observable
   ObservableList<Playlistmodel> playlists = ObservableList<Playlistmodel>();
 
   @observable
@@ -29,21 +32,11 @@ abstract class _AppBase with Store {
       audio: Audio.file("", metas: Metas(artist: "Artist", title: "Music")));
 
   @observable
-  ObservableFuture<List<Files>> musicList;
+  ObservableFuture<List<Files>> musicList;*/
 
-  _AppBase(this.pathsManager, this.db) {
-    musicList = pathsManager.initializeList().asObservable();
-    _initPlaylists();
-    liste = assetsAudioPlayer.playlistAudioFinished.listen(
-      (Playing playing) {
-        int index = playing.index + 1;
-        atualMusic =
-            PlayingAudio(audio: assetsAudioPlayer.playlist.audios[index]);
-      },
-    );
-  }
+  _AppBase(this.audioManager);
 
-  @action
+  /*@action
   createNewPlaylist({PlaylistEntity playlist, MusicEntity music}) async {
     int index = await db.playlistDao.insertPlaylist(playlist);
     music.indexOfPlaylist = index;
@@ -298,5 +291,5 @@ abstract class _AppBase with Store {
     }
 
     return returned;
-  }
+  }*/
 }

@@ -6,6 +6,7 @@ import 'package:music_player/app/app_widget.dart';
 import 'package:music_player/app/db/app_database.dart';
 
 import 'package:music_player/app/modules/home/home_module.dart';
+import 'package:music_player/app/shared/audio_manage/audio_manager.dart';
 import 'package:music_player/app/shared/paths_manage/paths_manager.dart';
 
 class AppModule extends MainModule {
@@ -15,7 +16,8 @@ class AppModule extends MainModule {
 
   @override
   List<Bind> get binds => [
-        Bind((i) => AppController(i.get<PathsManager>(), db)),
+        Bind((i) => AppController(i.get<AudioManager>())),
+        Bind((i) => AudioManager(db, i.get<PathsManager>())),
         Bind((i) => PathsManager()),
       ];
 
