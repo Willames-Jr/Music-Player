@@ -154,7 +154,8 @@ abstract class _AudioManagerBase with Store {
       Playlist(audios: musics, startIndex: startIndex),
       showNotification: true,
       notificationSettings: NotificationSettings(
-        stopEnabled: false,
+        stopEnabled: true,
+        customStopAction: (player) => stopMusic(player),
         customPlayPauseAction: (player) => playOrPauseMusic(),
         customPrevAction: (player) {
           previousMusic(player);
@@ -189,7 +190,8 @@ abstract class _AudioManagerBase with Store {
       Playlist(audios: pathsList, startIndex: musicList.value.indexOf(_file)),
       showNotification: true,
       notificationSettings: NotificationSettings(
-        stopEnabled: false,
+        stopEnabled: true,
+        customStopAction: (player) => stopMusic(player),
         customPlayPauseAction: (player) => playOrPauseMusic(),
         customPrevAction: (player) {
           previousMusic(player);
@@ -210,7 +212,8 @@ abstract class _AudioManagerBase with Store {
       Playlist(audios: atualPlaylist, startIndex: index),
       showNotification: true,
       notificationSettings: NotificationSettings(
-        stopEnabled: false,
+        stopEnabled: true,
+        customStopAction: (player) => stopMusic(player),
         customPlayPauseAction: (player) => playOrPauseMusic(),
         customPrevAction: (player) {
           previousMusic(player);
@@ -247,12 +250,25 @@ abstract class _AudioManagerBase with Store {
   nextMusic(AssetsAudioPlayer player) async {
     await player.next();
     atualMusic = assetsAudioPlayer.current.value.audio;
+    assetsAudioPlayer.playlist.startIndex =
+        assetsAudioPlayer.current.value.index;
   }
 
   @action
   previousMusic(AssetsAudioPlayer player) async {
     await player.previous();
     atualMusic = assetsAudioPlayer.current.value.audio;
+    assetsAudioPlayer.playlist.startIndex =
+        assetsAudioPlayer.current.value.index;
+  }
+
+  @action
+  stopMusic(AssetsAudioPlayer player) async {
+    int atualIndex = assetsAudioPlayer.current.value.index;
+    PlayingAudio _atualMusic = assetsAudioPlayer.current.value.audio;
+    await player.stop();
+    assetsAudioPlayer.playlist.startIndex = atualIndex;
+    atualMusic = _atualMusic;
   }
 
   @action
@@ -281,7 +297,7 @@ abstract class _AudioManagerBase with Store {
   }
 
   String getTotalDuration(AssetsAudioPlayer player) {
-    var returned = "nada";
+    var returned = "00:00";
     try {
       var duration = player.current.value.audio.duration;
       int seconds = duration.inSeconds;
