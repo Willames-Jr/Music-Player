@@ -240,9 +240,23 @@ abstract class _AudioManagerBase with Store {
   }
 
   @action
-  modifyPosition(int newIndex, int oldIndex) {
+  modifyPosition(int newIndex, int oldIndex) async {
+    final indexOfAtualMusic =
+        assetsAudioPlayer.current.value.playlist.currentIndex;
+    final atualPosition = assetsAudioPlayer.currentPosition.value;
     final music = assetsAudioPlayer.playlist.removeAtIndex(oldIndex);
     assetsAudioPlayer.playlist.insert(newIndex, music);
+    if (oldIndex == assetsAudioPlayer.current.value.playlist.currentIndex) {
+      await stopMusic(assetsAudioPlayer);
+      await assetsAudioPlayer.playlistPlayAtIndex(newIndex);
+      await assetsAudioPlayer.seek(atualPosition);
+    } else if (newIndex ==
+        assetsAudioPlayer.current.value.playlist.currentIndex) {
+      await stopMusic(assetsAudioPlayer);
+      await assetsAudioPlayer.playlistPlayAtIndex(
+          newIndex > oldIndex ? indexOfAtualMusic - 1 : indexOfAtualMusic + 1);
+      await assetsAudioPlayer.seek(atualPosition);
+    }
     atualMusic = assetsAudioPlayer.current.value.audio;
   }
 
