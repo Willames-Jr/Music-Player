@@ -109,34 +109,24 @@ class _MusicDetailsState extends State<MusicDetails> {
                     ),
                     Observer(
                       builder: (_) {
-                        return controller.audioManager.assetsAudioPlayer.current
-                                    .value.audio ==
-                                null
-                            ? Text("r")
-                            : PlayerBuilder.currentPosition(
-                                player:
-                                    controller.audioManager.assetsAudioPlayer,
-                                builder: (context, duration) {
-                                  return Slider(
-                                    onChanged: (v) {
-                                      controller.audioManager.assetsAudioPlayer
-                                          .seek(Duration(seconds: v.toInt()));
-                                    },
-                                    value: duration.inSeconds.toDouble(),
-                                    max: controller
-                                        .audioManager
-                                        .assetsAudioPlayer
-                                        .current
-                                        .value
-                                        .audio
-                                        .duration
-                                        .inSeconds
-                                        .toDouble(),
-                                    min: 0,
-                                    activeColor: Color(0XFF5E35B1),
-                                  );
-                                },
-                              );
+                        return PlayerBuilder.currentPosition(
+                          player: controller.audioManager.assetsAudioPlayer,
+                          builder: (context, duration) {
+                            return Slider(
+                              onChanged: (v) {
+                                controller.audioManager.assetsAudioPlayer
+                                    .seek(Duration(seconds: v.toInt()));
+                              },
+                              value: duration.inSeconds.toDouble(),
+                              max: controller.audioManager.assetsAudioPlayer
+                                      .current.value?.audio?.duration?.inSeconds
+                                      ?.toDouble() ??
+                                  100,
+                              min: 0,
+                              activeColor: Color(0XFF5E35B1),
+                            );
+                          },
+                        );
                       },
                     ),
                     Column(
@@ -165,14 +155,19 @@ class _MusicDetailsState extends State<MusicDetails> {
                               width: MediaQuery.of(context).size.width * 0.7,
                             ),
                             Observer(builder: (_) {
-                              return PlayerBuilder.currentPosition(
-                                  player:
-                                      controller.audioManager.assetsAudioPlayer,
-                                  builder: (context, duration) {
-                                    return Text(controller.audioManager
-                                        .getTotalDuration(controller
-                                            .audioManager.assetsAudioPlayer));
-                                  });
+                              return controller.audioManager.assetsAudioPlayer
+                                          .current.value.audio ==
+                                      null
+                                  ? Text("r")
+                                  : PlayerBuilder.currentPosition(
+                                      player: controller
+                                          .audioManager.assetsAudioPlayer,
+                                      builder: (context, duration) {
+                                        return Text(controller.audioManager
+                                            .getTotalDuration(controller
+                                                .audioManager
+                                                .assetsAudioPlayer));
+                                      });
                             }),
                           ],
                         ),
