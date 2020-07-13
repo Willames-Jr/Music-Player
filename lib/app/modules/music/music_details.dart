@@ -156,9 +156,9 @@ class _MusicDetailsState extends State<MusicDetails> {
                             ),
                             Observer(builder: (_) {
                               return controller.audioManager.assetsAudioPlayer
-                                          .current.value.audio ==
+                                          .current.value ==
                                       null
-                                  ? Text("r")
+                                  ? Text("00:00")
                                   : PlayerBuilder.currentPosition(
                                       player: controller
                                           .audioManager.assetsAudioPlayer,

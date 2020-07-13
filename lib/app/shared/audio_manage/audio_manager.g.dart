@@ -140,6 +140,15 @@ mixin _$AudioManager on _AudioManagerBase, Store {
         .run(() => super.playMusicOnPlaylist(index));
   }
 
+  final _$modifyPositionAsyncAction =
+      AsyncAction('_AudioManagerBase.modifyPosition');
+
+  @override
+  Future modifyPosition(int newIndex, int oldIndex) {
+    return _$modifyPositionAsyncAction
+        .run(() => super.modifyPosition(newIndex, oldIndex));
+  }
+
   final _$nextMusicAsyncAction = AsyncAction('_AudioManagerBase.nextMusic');
 
   @override
@@ -153,6 +162,13 @@ mixin _$AudioManager on _AudioManagerBase, Store {
   @override
   Future previousMusic(AssetsAudioPlayer player) {
     return _$previousMusicAsyncAction.run(() => super.previousMusic(player));
+  }
+
+  final _$stopMusicAsyncAction = AsyncAction('_AudioManagerBase.stopMusic');
+
+  @override
+  Future stopMusic(AssetsAudioPlayer player) {
+    return _$stopMusicAsyncAction.run(() => super.stopMusic(player));
   }
 
   final _$playOrPauseMusicAsyncAction =
@@ -183,17 +199,6 @@ mixin _$AudioManager on _AudioManagerBase, Store {
         name: '_AudioManagerBase.addAtTheEndOfQueue');
     try {
       return super.addAtTheEndOfQueue(audio);
-    } finally {
-      _$_AudioManagerBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic modifyPosition(int newIndex, int oldIndex) {
-    final _$actionInfo = _$_AudioManagerBaseActionController.startAction(
-        name: '_AudioManagerBase.modifyPosition');
-    try {
-      return super.modifyPosition(newIndex, oldIndex);
     } finally {
       _$_AudioManagerBaseActionController.endAction(_$actionInfo);
     }

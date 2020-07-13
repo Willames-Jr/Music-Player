@@ -35,12 +35,9 @@ class _BottomDetailState extends State<BottomDetail> {
             Observer(
               builder: (_) {
                 return FlatButton(
-                  onPressed:
-                      controller.audioManager.atualMusic.audio.path == null
-                          ? null
-                          : () {
-                              Navigator.pushNamed(context, "/musicDetails");
-                            },
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/musicDetails");
+                  },
                   child: Stack(
                     children: <Widget>[
                       Positioned(
