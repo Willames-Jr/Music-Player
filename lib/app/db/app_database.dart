@@ -9,6 +9,8 @@ import 'package:music_player/app/entitys/playlist_entity.dart';
 
 part 'app_database.g.dart';
 
+//Config local DB with Floor
+
 @Database(version: 1, entities: [PlaylistEntity, MusicEntity])
 abstract class DataBase extends FloorDatabase {
   PlaylistDao get playlistDao;

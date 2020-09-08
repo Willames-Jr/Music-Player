@@ -1,3 +1,5 @@
+// Class to convert the Audio json received from the "storage_path" to a object
+
 class AudioModel {
   List<Files> files;
   String folderName;

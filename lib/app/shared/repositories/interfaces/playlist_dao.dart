@@ -1,6 +1,8 @@
 import 'package:floor/floor.dart';
 import 'package:music_player/app/entitys/playlist_entity.dart';
 
+// Contains all the methods that make a query in the local database in the "Playlist" table
+
 @dao
 abstract class PlaylistDao {
   @Query('SELECT * FROM Playlists')

@@ -8,6 +8,28 @@ import 'package:music_player/app/shared/models/playlist_model.dart';
 import 'package:music_player/app/shared/paths_manage/paths_manager.dart';
 part 'audio_manager.g.dart';
 
+/* The "main" part of the application that has the following functions:
+  * createNewPlaylist() => This function is responsible for taking the necessary parameters 
+    for the creation of a new playlist and inserting this data in the local database;
+  * addMusicOnPlaylist() => Adds the received song to the received playlist in the local database;
+  * deletePlaylist() => Delete the received playlist in the local database;
+  * deleteMusicFromPlaylist() => Delete the received song to the received playlist in the local database;
+  * _initPlaylists() => Receive all playlists from the local database and add them to the "playlists" variable;
+  * getMusicsOfPlaylist() => Receive the index of playlist in "playlists" and return all musics in it;
+  * playPlaylist() => Play the playlist at received index starting from "startIndex" 
+    and being able to have a random order depending on the "shuffle";
+  * playMusic() => Play informed music by "file" and start a new musics queue 
+    which can be random depending on the shuffle or have a normal order starting with the music received;
+  * playMusicOnPlaylist() => Play informed music by "index" in actual Playlist;
+  * addAsNextMusic() => Add the informed music by "audio" as the next in the queue;
+  * addAtTheEndOfQueue() => Add the informed music by "audio" as the last in the queue;
+  * modifyPosition() => !!! Need changes !!! Modify the position of a music with the "oldIndex" and "newIndex";
+  * stopMusic() => Stops the actual music;
+  * playOrPauseMusic() => Play or pause the actual music;
+  * getActualDuraction() => Get the actual duraction and convert to String format;
+  * getTotalDuration() => Get the total duration of current music and convert to String format;
+*/
+
 class AudioManager = _AudioManagerBase with _$AudioManager;
 
 abstract class _AudioManagerBase with Store {
@@ -59,9 +81,9 @@ abstract class _AudioManagerBase with Store {
   }
 
   @action
-  addMusicOnPlaylist({MusicEntity music, int index}) async {
+  addMusicOnPlaylist({MusicEntity music, int indexOfPlaylist}) async {
     await _db.musicDao.insertMusic(music);
-    playlists[index].musics.add(music);
+    playlists[indexOfPlaylist].musics.add(music);
   }
 
   @action
@@ -105,8 +127,8 @@ abstract class _AudioManagerBase with Store {
     }
   }
 
-  List<Audio> getMusicsOfPlaylist(int index) {
-    var atualPlaylist = playlists[index];
+  List<Audio> getMusicsOfPlaylist({int indexOfPlaylist}) {
+    var atualPlaylist = playlists[indexOfPlaylist];
     List<Audio> musics = [];
 
     for (MusicEntity music in atualPlaylist.musics) {
@@ -128,8 +150,8 @@ abstract class _AudioManagerBase with Store {
   }
 
   @action
-  playPlaylist(int index, {bool shuffle, int startIndex}) async {
-    var atualPlaylist = playlists[index];
+  playPlaylist({int indexOfPlaylist, bool shuffle, int startIndex}) async {
+    var atualPlaylist = playlists[indexOfPlaylist];
     List<Audio> musics = [];
 
     for (MusicEntity music in atualPlaylist.musics) {
@@ -169,7 +191,7 @@ abstract class _AudioManagerBase with Store {
   }
 
   @action
-  playMusic(Files _file, {bool shuffle}) async {
+  playMusic({Files musicFile, bool shuffle}) async {
     List<Audio> pathsList = [];
     for (int c = 0; c < musicList.value.length; c++) {
       pathsList.add(Audio.file(
@@ -179,7 +201,7 @@ abstract class _AudioManagerBase with Store {
           album: musicList.value[c].album,
           artist: musicList.value[c].artist == "<unknown>"
               ? "Artista Desconhecido"
-              : musicList.value[c].displayName,
+              : musicList.value[c].artist,
         ),
       ));
     }
@@ -187,7 +209,8 @@ abstract class _AudioManagerBase with Store {
       pathsList.shuffle();
     }
     await assetsAudioPlayer.open(
-      Playlist(audios: pathsList, startIndex: musicList.value.indexOf(_file)),
+      Playlist(
+          audios: pathsList, startIndex: musicList.value.indexOf(musicFile)),
       showNotification: true,
       notificationSettings: NotificationSettings(
         stopEnabled: true,
@@ -205,11 +228,11 @@ abstract class _AudioManagerBase with Store {
   }
 
   @action
-  playMusicOnPlaylist(int index) async {
+  playMusicOnActualPlaylist({int indexOfMusic}) async {
     List<Audio> atualPlaylist = assetsAudioPlayer.playlist.audios;
 
     await assetsAudioPlayer.open(
-      Playlist(audios: atualPlaylist, startIndex: index),
+      Playlist(audios: atualPlaylist, startIndex: indexOfMusic),
       showNotification: true,
       notificationSettings: NotificationSettings(
         stopEnabled: true,
@@ -228,19 +251,19 @@ abstract class _AudioManagerBase with Store {
   }
 
   @action
-  addAsNextMusic(Audio audio) {
+  addAsNextMusic({Audio music}) {
     int indexOfAtualMusic =
         assetsAudioPlayer.current.value.playlist.currentIndex;
-    assetsAudioPlayer.playlist.insert(indexOfAtualMusic + 1, audio);
+    assetsAudioPlayer.playlist.insert(indexOfAtualMusic + 1, music);
   }
 
   @action
-  addAtTheEndOfQueue(Audio audio) {
-    assetsAudioPlayer.playlist.add(audio);
+  addAtTheEndOfQueue({Audio music}) {
+    assetsAudioPlayer.playlist.add(music);
   }
 
   @action
-  modifyPosition(int newIndex, int oldIndex) async {
+  modifyPosition({int newIndex, int oldIndex}) async {
     final indexOfAtualMusic =
         assetsAudioPlayer.current.value.playlist.currentIndex;
     final atualPosition = assetsAudioPlayer.currentPosition.value;

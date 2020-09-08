@@ -1,12 +1,12 @@
-import 'package:assets_audio_player/assets_audio_player.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:music_player/app/consts/app_const.dart';
 import 'package:music_player/app/widgets/micro_playlist.dart';
 
 import '../app_controller.dart';
+
+// Show All playlists in the local database in a grid with MicroPlaylists
 
 class AllPlaylists extends StatefulWidget {
   @override

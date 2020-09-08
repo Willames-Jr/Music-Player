@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:assets_audio_player/assets_audio_player.dart';
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
@@ -9,12 +8,15 @@ import 'package:implicitly_animated_reorderable_list/implicitly_animated_reorder
 import 'package:implicitly_animated_reorderable_list/transitions.dart';
 import 'package:music_player/app/app_controller.dart';
 
-class PlayingMusicsDetails extends StatefulWidget {
+// !!!Need change => change position doesn't work very well!!!
+// Show the actual palylist queue and allows the user to move the musics to change the order;
+
+class MusicsQueueDetails extends StatefulWidget {
   @override
-  _PlayingMusicsDetailsState createState() => _PlayingMusicsDetailsState();
+  _MusicsQueueDetailsState createState() => _MusicsQueueDetailsState();
 }
 
-class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
+class _MusicsQueueDetailsState extends State<MusicsQueueDetails> {
   final controller = Modular.get<AppController>();
 
   @override
@@ -31,7 +33,8 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
             items: controller.audioManager.assetsAudioPlayer.playlist.audios,
             areItemsTheSame: (oldItem, newItem) => oldItem.path == newItem.path,
             onReorderFinished: (item, from, to, newItems) {
-              controller.audioManager.modifyPosition(to, from);
+              controller.audioManager
+                  .modifyPosition(newIndex: to, oldIndex: from);
             },
             itemBuilder: (context, itemAnimation, item, index) {
               return Reorderable(
@@ -66,7 +69,7 @@ class _PlayingMusicsDetailsState extends State<PlayingMusicsDetails> {
                             ),
                           ),
                           onTap: () => controller.audioManager
-                              .playMusicOnPlaylist(index),
+                              .playMusicOnActualPlaylist(indexOfMusic: index),
                           trailing: Observer(
                             builder: (_) {
                               return Icon(

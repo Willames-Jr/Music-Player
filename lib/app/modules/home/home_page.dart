@@ -3,10 +3,13 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:md2_tab_indicator/md2_tab_indicator.dart';
 import 'package:music_player/app/app_controller.dart';
-import 'package:music_player/app/consts/app_const.dart';
 import 'package:music_player/app/widgets/all_musics.dart';
 import 'package:music_player/app/widgets/all_playLists.dart';
 import 'package:music_player/app/widgets/bottom_detail.dart';
+
+// Main page where the user can switch between the music screen and playlists
+// For this, the md2_tab_indicator is used at the top of the screen
+// Depending on the "tab" selected, the "AllPlaylists" or "AllMusics" widget is called
 
 class HomePage extends StatefulWidget {
   final String title;
@@ -62,7 +65,7 @@ class _HomePageState extends State<HomePage>
               text: "Playlists",
             ),
             Tab(
-              text: "Músicas",
+              text: "Musics",
             )
           ],
         ),

@@ -83,9 +83,9 @@ mixin _$AudioManager on _AudioManagerBase, Store {
       AsyncAction('_AudioManagerBase.addMusicOnPlaylist');
 
   @override
-  Future addMusicOnPlaylist({MusicEntity music, int index}) {
-    return _$addMusicOnPlaylistAsyncAction
-        .run(() => super.addMusicOnPlaylist(music: music, index: index));
+  Future addMusicOnPlaylist({MusicEntity music, int indexOfPlaylist}) {
+    return _$addMusicOnPlaylistAsyncAction.run(() => super
+        .addMusicOnPlaylist(music: music, indexOfPlaylist: indexOfPlaylist));
   }
 
   final _$deletePlaylistAsyncAction =
@@ -118,35 +118,37 @@ mixin _$AudioManager on _AudioManagerBase, Store {
       AsyncAction('_AudioManagerBase.playPlaylist');
 
   @override
-  Future playPlaylist(int index, {bool shuffle, int startIndex}) {
-    return _$playPlaylistAsyncAction.run(() =>
-        super.playPlaylist(index, shuffle: shuffle, startIndex: startIndex));
+  Future playPlaylist({int indexOfPlaylist, bool shuffle, int startIndex}) {
+    return _$playPlaylistAsyncAction.run(() => super.playPlaylist(
+        indexOfPlaylist: indexOfPlaylist,
+        shuffle: shuffle,
+        startIndex: startIndex));
   }
 
   final _$playMusicAsyncAction = AsyncAction('_AudioManagerBase.playMusic');
 
   @override
-  Future playMusic(Files _file, {bool shuffle}) {
+  Future playMusic({Files musicFile, bool shuffle}) {
     return _$playMusicAsyncAction
-        .run(() => super.playMusic(_file, shuffle: shuffle));
+        .run(() => super.playMusic(musicFile: musicFile, shuffle: shuffle));
   }
 
-  final _$playMusicOnPlaylistAsyncAction =
-      AsyncAction('_AudioManagerBase.playMusicOnPlaylist');
+  final _$playMusicOnActualPlaylistAsyncAction =
+      AsyncAction('_AudioManagerBase.playMusicOnActualPlaylist');
 
   @override
-  Future playMusicOnPlaylist(int index) {
-    return _$playMusicOnPlaylistAsyncAction
-        .run(() => super.playMusicOnPlaylist(index));
+  Future playMusicOnActualPlaylist({int indexOfMusic}) {
+    return _$playMusicOnActualPlaylistAsyncAction
+        .run(() => super.playMusicOnActualPlaylist(indexOfMusic: indexOfMusic));
   }
 
   final _$modifyPositionAsyncAction =
       AsyncAction('_AudioManagerBase.modifyPosition');
 
   @override
-  Future modifyPosition(int newIndex, int oldIndex) {
-    return _$modifyPositionAsyncAction
-        .run(() => super.modifyPosition(newIndex, oldIndex));
+  Future modifyPosition({int newIndex, int oldIndex}) {
+    return _$modifyPositionAsyncAction.run(
+        () => super.modifyPosition(newIndex: newIndex, oldIndex: oldIndex));
   }
 
   final _$nextMusicAsyncAction = AsyncAction('_AudioManagerBase.nextMusic');
@@ -183,22 +185,22 @@ mixin _$AudioManager on _AudioManagerBase, Store {
       ActionController(name: '_AudioManagerBase');
 
   @override
-  dynamic addAsNextMusic(Audio audio) {
+  dynamic addAsNextMusic({Audio music}) {
     final _$actionInfo = _$_AudioManagerBaseActionController.startAction(
         name: '_AudioManagerBase.addAsNextMusic');
     try {
-      return super.addAsNextMusic(audio);
+      return super.addAsNextMusic(music: music);
     } finally {
       _$_AudioManagerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic addAtTheEndOfQueue(Audio audio) {
+  dynamic addAtTheEndOfQueue({Audio music}) {
     final _$actionInfo = _$_AudioManagerBaseActionController.startAction(
         name: '_AudioManagerBase.addAtTheEndOfQueue');
     try {
-      return super.addAtTheEndOfQueue(audio);
+      return super.addAtTheEndOfQueue(music: music);
     } finally {
       _$_AudioManagerBaseActionController.endAction(_$actionInfo);
     }

@@ -4,7 +4,14 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:music_player/app/app_controller.dart';
 import 'package:music_player/app/consts/app_const.dart';
-import 'package:music_player/app/widgets/playing_musics_details.dart';
+import 'package:music_player/app/widgets/musics_queue_details.dart';
+
+/* This page allows the user:
+  * Go to the previous/next song;
+  * Pause/Play the actual music
+  * Choose a specific moment of the song
+  * Show/Hide the current musics queue
+ */
 
 class MusicDetails extends StatefulWidget {
   @override
@@ -19,7 +26,7 @@ class _MusicDetailsState extends State<MusicDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Música atual"),
+        title: Text("Actual Music"),
         actions: <Widget>[
           IconButton(
               iconSize: 30,
@@ -35,7 +42,7 @@ class _MusicDetailsState extends State<MusicDetails> {
         ],
       ),
       body: _playlistVisible
-          ? PlayingMusicsDetails()
+          ? MusicsQueueDetails()
           : Container(
               width: MediaQuery.of(context).size.width,
               child: SingleChildScrollView(
@@ -100,7 +107,7 @@ class _MusicDetailsState extends State<MusicDetails> {
                             text: controller.audioManager.atualMusic.audio.metas
                                         .artist ==
                                     "<unknown>"
-                                ? "Artista Desconhecido"
+                                ? "Unknown artist"
                                 : controller
                                     .audioManager.atualMusic.audio.metas.artist,
                           ),

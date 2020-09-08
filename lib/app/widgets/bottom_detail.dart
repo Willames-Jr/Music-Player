@@ -5,6 +5,8 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:music_player/app/app_controller.dart';
 import 'package:music_player/app/consts/app_const.dart';
 
+// Elemento que fica na parte de baixo da tela, que pode pausar a musica atual
+
 class BottomDetail extends StatefulWidget {
   @override
   _BottomDetailState createState() => _BottomDetailState();
@@ -80,7 +82,7 @@ class _BottomDetailState extends State<BottomDetail> {
                                 controller.audioManager.atualMusic.audio.metas
                                             .artist ==
                                         "<unknown>"
-                                    ? "Artista Desconhecido"
+                                    ? "Unknown artist"
                                     : controller.audioManager.atualMusic.audio
                                         .metas.artist,
                                 style: TextStyle(fontSize: 14),

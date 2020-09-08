@@ -7,6 +7,8 @@ import 'package:music_player/app/consts/app_const.dart';
 import 'package:music_player/app/shared/models/audio_model.dart';
 import 'package:music_player/app/widgets/show_dialogs.dart';
 
+// Show All musics in the local device in a list of elements
+
 class AllMusics extends StatefulWidget {
   @override
   _AllMusicsState createState() => _AllMusicsState();
@@ -25,11 +27,12 @@ class _AllMusicsState extends State<AllMusics> {
           child: FlatButton(
             padding: EdgeInsets.all(0),
             onPressed: () {
-              controller.audioManager.playMusic(list[index], shuffle: true);
+              controller.audioManager
+                  .playMusic(musicFile: list[index], shuffle: true);
             },
             child: const ListTile(
               title: Text(
-                "Ordem aleatória",
+                "Random order",
                 style: TextStyle(fontSize: 21, color: Colors.blue),
               ),
               leading: SizedBox(
@@ -75,7 +78,7 @@ class _AllMusicsState extends State<AllMusics> {
           } else if (value == "addAtTheEnd") {
             if (controller.audioManager.assetsAudioPlayer.playlist != null) {
               controller.audioManager.addAtTheEndOfQueue(
-                Audio.file(
+                music: Audio.file(
                   list[index].path,
                   metas: Metas(
                       album: list[index].album,
@@ -86,7 +89,7 @@ class _AllMusicsState extends State<AllMusics> {
             }
           } else if (value == "addAsNext") {
             controller.audioManager.addAsNextMusic(
-              Audio.file(
+              music: Audio.file(
                 list[index].path,
                 metas: Metas(
                     album: list[index].album,
@@ -99,15 +102,15 @@ class _AllMusicsState extends State<AllMusics> {
         itemBuilder: (_) {
           return <PopupMenuEntry>[
             PopupMenuItem(
-              child: Text("Adicionar à Playlist"),
+              child: Text("Add to Playlist"),
               value: "create",
             ),
             PopupMenuItem(
-              child: Text("Adicionar à fila"),
+              child: Text("Add to queue"),
               value: "addAtTheEnd",
             ),
             PopupMenuItem(
-              child: Text("Reproduzir a seguir"),
+              child: Text("Play next"),
               value: "addAsNext",
             ),
           ];
@@ -115,10 +118,11 @@ class _AllMusicsState extends State<AllMusics> {
       ),
       subtitle: Text(
           controller.audioManager.musicList.value[index].artist == "<unknown>"
-              ? "Artista desconhecido"
+              ? "Unknown artist"
               : controller.audioManager.musicList.value[index].artist),
       onTap: () {
-        controller.audioManager.playMusic(list[index], shuffle: false);
+        controller.audioManager
+            .playMusic(musicFile: list[index], shuffle: false);
       },
     );
   }

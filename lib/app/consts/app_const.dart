@@ -1,3 +1,5 @@
+//Assets images paths
+
 class AppConsts {
   static const String casseteImage = "assets/images/cassette-tape.jpg";
   static const String guitar = "assets/images/guitar.jpg";

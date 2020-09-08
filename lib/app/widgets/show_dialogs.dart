@@ -7,6 +7,8 @@ import 'package:music_player/app/consts/app_const.dart';
 import 'package:music_player/app/entitys/music_entity.dart';
 import 'package:music_player/app/entitys/playlist_entity.dart';
 
+// Each function displays Dialog so that the user can make/confirm a choice
+
 class ShowDialogs {
   final controller = Modular.get<AppController>();
   final _listOfImages = [
@@ -44,9 +46,9 @@ class ShowDialogs {
           },
         );
         return AlertDialog(
-          title: Text("Remover música da playlist"),
+          title: Text("Remove music from playlist"),
           content: Container(
-            child: Text("Deseja remover essa música da playlist ? "),
+            child: Text("Do you want to remove this song from the playlist ?"),
           ),
           actions: <Widget>[
             cancelButton,
@@ -65,7 +67,7 @@ class ShowDialogs {
 
         Widget createPlaylistButton = FlatButton(
           child: Text(
-            "Nova playlist",
+            "New playlist",
             style: TextStyle(fontSize: 17),
           ),
           onPressed: () async {
@@ -85,7 +87,7 @@ class ShowDialogs {
         );
         Widget cancelButton = FlatButton(
           child: Text(
-            "Cancelar",
+            "Cancel",
             style: TextStyle(fontSize: 17),
           ),
           onPressed: () {
@@ -95,11 +97,11 @@ class ShowDialogs {
 
         return SingleChildScrollView(
           child: AlertDialog(
-            title: Text("Nova Playlist"),
+            title: Text("New Playlist"),
             content: Column(
               children: <Widget>[
                 Text(
-                  "Selecione a imagem: ",
+                  "Select a image: ",
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(
@@ -133,7 +135,7 @@ class ShowDialogs {
                   controller: textController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(),
-                    hintText: "Nome",
+                    hintText: "Name",
                   ),
                 ),
               ],
@@ -151,7 +153,7 @@ class ShowDialogs {
       builder: (context) {
         Widget createButton = FlatButton(
           child: Text(
-            "Nova playlist",
+            "New playlist",
             style: TextStyle(fontSize: 17),
           ),
           onPressed: () {
@@ -161,7 +163,7 @@ class ShowDialogs {
         );
         Widget cancelButton = FlatButton(
           child: Text(
-            "Cancelar",
+            "Cancel",
             style: TextStyle(fontSize: 17),
           ),
           onPressed: () {
@@ -169,7 +171,7 @@ class ShowDialogs {
           },
         );
         return AlertDialog(
-          title: Text("Adicionar á playlist"),
+          title: Text("Add to playlist"),
           content: Container(
             child: ListView.builder(
               itemCount: controller.audioManager.playlists.length,
@@ -185,7 +187,7 @@ class ShowDialogs {
                           indexOfPlaylist:
                               controller.audioManager.playlists[index].index,
                         ),
-                        index: index,
+                        indexOfPlaylist: index,
                       );
                       Navigator.of(context).pop();
                     },

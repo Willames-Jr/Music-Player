@@ -1,15 +1,17 @@
-import 'package:draggable_scrollbar/draggable_scrollbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:music_player/app/app_controller.dart';
-import 'package:music_player/app/consts/app_const.dart';
 import 'package:music_player/app/widgets/show_dialogs.dart';
 
-class PlaylistDetails extends StatefulWidget {
-  final int index;
+/* Show the selected playlist informed by "playlistIndex" details and allows the user to
+  play it from the beginning or select a song to play from it
+*/
 
-  const PlaylistDetails({Key key, this.index}) : super(key: key);
+class PlaylistDetails extends StatefulWidget {
+  final int playlistIndex;
+
+  const PlaylistDetails({Key key, this.playlistIndex}) : super(key: key);
   @override
   _PlaylistDetailsState createState() => _PlaylistDetailsState();
 }
@@ -21,7 +23,7 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
 
   @override
   Widget build(BuildContext context) {
-    musics = controller.audioManager.playlists[widget.index].musics;
+    musics = controller.audioManager.playlists[widget.playlistIndex].musics;
 
     return Scaffold(
       body: CustomScrollView(
@@ -30,10 +32,11 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
             expandedHeight: 200,
             pinned: true,
             flexibleSpace: FlexibleSpaceBar(
-              title: Text(controller.audioManager.playlists[widget.index].name),
+              title: Text(
+                  controller.audioManager.playlists[widget.playlistIndex].name),
               centerTitle: true,
               background: Image.asset(
-                controller.audioManager.playlists[widget.index].image,
+                controller.audioManager.playlists[widget.playlistIndex].image,
                 fit: BoxFit.cover,
               ),
             ),
@@ -41,8 +44,10 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               IconButton(
                 icon: Icon(Icons.play_arrow),
                 iconSize: 40,
-                onPressed: () => controller.audioManager
-                    .playPlaylist(widget.index, shuffle: false, startIndex: 0),
+                onPressed: () => controller.audioManager.playPlaylist(
+                    indexOfPlaylist: widget.playlistIndex,
+                    shuffle: false,
+                    startIndex: 0),
               ),
               SizedBox(
                 width: 20,
@@ -54,14 +59,15 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
               return SliverList(
                 delegate: SliverChildBuilderDelegate(
                   (BuildContext context, int index) {
-                    var list = controller.audioManager
-                        .getMusicsOfPlaylist(widget.index);
+                    var list = controller.audioManager.getMusicsOfPlaylist(
+                        indexOfPlaylist: widget.playlistIndex);
 
                     return ListTile(
                       leading: ClipRRect(
                         borderRadius: BorderRadius.circular(30.0),
                         child: Image.asset(
-                          controller.audioManager.playlists[widget.index].image,
+                          controller.audioManager
+                              .playlists[widget.playlistIndex].image,
                           fit: BoxFit.cover,
                           height: 50,
                           width: 50,
@@ -79,30 +85,32 @@ class _PlaylistDetailsState extends State<PlaylistDetails> {
                         icon: Icon(Icons.more_vert),
                         onSelected: (value) {
                           if (value == "delete") {
-                            ShowDialogs().deleteMusicFromPlaylistDialog(
-                                context, widget.index, list[index].path);
+                            ShowDialogs().deleteMusicFromPlaylistDialog(context,
+                                widget.playlistIndex, list[index].path);
                           }
                         },
                         itemBuilder: (_) {
                           return <PopupMenuEntry>[
                             PopupMenuItem(
-                              child: Text("Remover da playlist"),
+                              child: Text("Remove from playlist"),
                               value: "delete",
                             ),
                           ];
                         },
                       ),
                       subtitle: Text(list[index].metas.artist == "<unknown>"
-                          ? "Artista desconhecido"
+                          ? "Unknown artist"
                           : list[index].metas.artist),
                       onTap: () {
-                        controller.audioManager.playPlaylist(widget.index,
-                            shuffle: false, startIndex: index);
+                        controller.audioManager.playPlaylist(
+                            indexOfPlaylist: widget.playlistIndex,
+                            shuffle: false,
+                            startIndex: index);
                       },
                     );
                   },
-                  childCount: controller
-                      .audioManager.playlists[widget.index].musics.length,
+                  childCount: controller.audioManager
+                      .playlists[widget.playlistIndex].musics.length,
                 ),
               );
             },

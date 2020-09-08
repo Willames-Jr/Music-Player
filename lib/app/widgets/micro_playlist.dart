@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:music_player/app/app_controller.dart';
-import 'package:music_player/app/consts/app_const.dart';
 import 'package:music_player/app/entitys/playlist_entity.dart';
+
+// Shows some playlist details, and allows the user to delete, play or play in random order
 
 class MicroPlaylist extends StatefulWidget {
   final int index;
@@ -49,18 +50,20 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
                             .audioManager.playlists[widget.index].name),
                   );
                 } else if (value == "shuffle") {
-                  controller.audioManager
-                      .playPlaylist(widget.index, shuffle: true, startIndex: 0);
+                  controller.audioManager.playPlaylist(
+                      indexOfPlaylist: widget.index,
+                      shuffle: true,
+                      startIndex: 0);
                 }
               },
               itemBuilder: (_) {
                 return <PopupMenuEntry>[
                   PopupMenuItem(
-                    child: Text("Excluir Playlist"),
+                    child: Text("Delete playlist"),
                     value: "delete",
                   ),
                   PopupMenuItem(
-                    child: Text("Ordem Aleatória"),
+                    child: Text("Random order"),
                     value: "shuffle",
                   ),
                 ];
@@ -88,8 +91,10 @@ class _MicroPlaylistState extends State<MicroPlaylist> {
               ),
               iconSize: 40,
               onPressed: () {
-                controller.audioManager
-                    .playPlaylist(widget.index, shuffle: false, startIndex: 0);
+                controller.audioManager.playPlaylist(
+                    indexOfPlaylist: widget.index,
+                    shuffle: false,
+                    startIndex: 0);
               },
             ),
           ),
